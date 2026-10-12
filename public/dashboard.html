@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Receipt Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">Durga Puja Receipts</div>
+      <div>
+        <span class="who" id="who"></span>
+        <button type="button" class="small" id="logoutBtn">Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="stats" aria-label="Collection summary">
+      <div class="card stat">
+        <div class="label">Total Collection</div>
+        <div class="value" id="totalCollection">—</div>
+      </div>
+      <div class="card stat count">
+        <div class="label">Total Receipts</div>
+        <div class="value" id="totalReceipts">—</div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="createTitle">
+      <h2 id="createTitle">Create Receipt</h2>
+      <form id="receiptForm" novalidate>
+        <div class="field">
+          <label for="donorName">Donor Name (English)</label>
+          <input id="donorName" name="donorName" type="text" maxlength="80" autocomplete="off" autocapitalize="words" required>
+        </div>
+        <div class="field">
+          <label for="amount">Amount (INR)</label>
+          <div class="amount-wrap">
+            <span aria-hidden="true">₹</span>
+            <input id="amount" name="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00" required>
+          </div>
+        </div>
+        <button type="submit" id="saveBtn">Save &amp; Download Receipt</button>
+        <div id="msg" class="msg" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <div class="actions">
+      <button type="button" class="secondary" id="exportBtn">Download All Records as Excel</button>
+      <div id="exportMsg" class="msg error" role="alert"></div>
+    </div>
+  </main>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
