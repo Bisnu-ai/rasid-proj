@@ -235,6 +235,7 @@ function generateReceiptPdf(receipt) {
       size: [W, H],
       margin: 0,
       compress: true,
+      font: null,
       info: { Title: 'Donation Receipt' },
     });
     const chunks = [];

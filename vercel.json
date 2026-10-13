@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "api/index.js": {
-      "includeFiles": "{fonts,assets,public}/**",
+      "includeFiles": "{fonts,assets,public,node_modules/pdfkit}/**",
       "maxDuration": 15
     }
   },
