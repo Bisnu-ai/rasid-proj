@@ -2,10 +2,7 @@
   "version": 2,
   "functions": {
     "api/index.js": {
-      "includeFiles": [
-        "fonts/**",
-        "assets/**"
-      ],
+      "includeFiles": "{fonts,assets}/**",
       "maxDuration": 15
     }
   },
