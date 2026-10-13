@@ -65,5 +65,10 @@ module.exports = async (req, res) => {
     req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
   }
 
-  return appInstance(req, res);
+  return new Promise((resolve, reject) => {
+    res.on('finish', resolve);
+    res.on('close', resolve);
+    res.on('error', reject);
+    appInstance(req, res);
+  });
 };
