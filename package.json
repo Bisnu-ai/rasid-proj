@@ -2,13 +2,13 @@
   "name": "durga-puja-receipts",
   "version": "2.0.0",
   "description": "Durga Puja online receipt management system (Odia PDF receipts, MongoDB Atlas, Excel export)",
-  "main": "server.js",
+  "main": "src/server.js",
   "private": true,
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node src/server.js",
     "create-user": "node scripts/createUser.js",
     "test": "node test/workflow.test.js"
   },

@@ -1,8 +1,8 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const config = require('./src/config');
-const { createApp } = require('./src/app');
+const config = require('./config');
+const { createApp } = require('./app');
 
 async function main() {
   await mongoose.connect(config.mongoUri, { serverSelectionTimeoutMS: 15000 });
