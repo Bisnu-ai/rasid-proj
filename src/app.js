@@ -156,7 +156,8 @@ function createApp() {
     if (!mongoose.isValidObjectId(req.params.id)) return res.status(404).json({ error: 'Receipt not found.' });
     const r = await Receipt.findById(req.params.id).lean();
     if (!r) return res.status(404).json({ error: 'Receipt not found.' });
-    const pdf = await generateReceiptPdf(r);
+    const collectorName = req.user ? req.user.username : '';
+    const pdf = await generateReceiptPdf(r, collectorName);
     res.set({
       'Content-Type': 'application/pdf',
       'Content-Disposition': `attachment; filename="${receiptView(r).filename}"`,

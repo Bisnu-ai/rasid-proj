@@ -134,7 +134,7 @@ function drawMaaPortrait(doc, x, y, w, h) {
   diamond(doc, x + w, y + h, 3.2, C.gold);
 }
 
-function drawReceipt(doc, receipt) {
+function drawReceipt(doc, receipt, collectorName) {
   // Background
   doc.rect(0, 0, W, H).fill(C.cream);
 
@@ -218,6 +218,16 @@ function drawReceipt(doc, receipt) {
   doc.save();
   const sigX = W - 155;
   const sigY = 328;
+
+  // Name of the logged-in user / creator
+  const rawName = collectorName || (receipt && (receipt.collectorName || receipt.createdBy || receipt.creator)) || '';
+  if (rawName && typeof rawName === 'string') {
+    const trimmed = rawName.trim();
+    const displayName = trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+    doc.font(FONT_BOLD).fontSize(13).fillColor(C.deepRed);
+    doc.text(displayName, sigX - 10, sigY - 18, { width: 135, align: 'center', lineBreak: false, ellipsis: true });
+  }
+
   doc.dash(2, { space: 3 }).lineWidth(0.8).strokeColor(C.muted)
     .moveTo(sigX, sigY).lineTo(sigX + 115, sigY).stroke().undash();
   doc.font(FONT_BOLD).fontSize(11).fillColor(C.muted);
@@ -229,7 +239,7 @@ function drawReceipt(doc, receipt) {
 }
 
 /** Generate the receipt PDF for a saved receipt record. Resolves to a Buffer. */
-function generateReceiptPdf(receipt) {
+function generateReceiptPdf(receipt, collectorName) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({
       size: [W, H],
@@ -243,7 +253,7 @@ function generateReceiptPdf(receipt) {
     doc.on('end', () => resolve(Buffer.concat(chunks)));
     doc.on('error', reject);
     try {
-      drawReceipt(doc, receipt);
+      drawReceipt(doc, receipt, collectorName);
       doc.end();
     } catch (err) {
       reject(err);
