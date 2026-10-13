@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const mongoose = require('mongoose');
 const config = require('../src/config');
 const { createApp } = require('../src/app');
@@ -42,6 +44,23 @@ async function connectToDatabase() {
  * Vercel Serverless Function handler wrapping the Express application.
  */
 module.exports = async (req, res) => {
+  // Direct handling for landing page if routed to function
+  if (req.url === '/' || req.url === '' || req.url.startsWith('/?') || req.url === '/index.html') {
+    const candidates = [
+      path.join(__dirname, '..', 'public', 'login.html'),
+      path.join(process.cwd(), 'public', 'login.html'),
+      path.join(__dirname, '..', 'index.html'),
+      path.join(process.cwd(), 'index.html'),
+    ];
+    for (const file of candidates) {
+      if (fs.existsSync(file)) {
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.end(fs.readFileSync(file, 'utf8'));
+        return;
+      }
+    }
+  }
+
   try {
     await connectToDatabase();
   } catch (err) {
@@ -54,13 +73,12 @@ module.exports = async (req, res) => {
     appInstance = createApp();
   }
 
-  // Normalize route if Vercel rewrite strips the /api prefix
+  // Normalize route if prefix was stripped
   if (
-    !req.url.startsWith('/api') &&
-    !req.url.startsWith('/login') &&
-    !req.url.startsWith('/dashboard') &&
-    !req.url.startsWith('/css') &&
-    !req.url.startsWith('/js')
+    req.url.startsWith('/auth') ||
+    req.url.startsWith('/stats') ||
+    req.url.startsWith('/receipts') ||
+    req.url.startsWith('/export')
   ) {
     req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
   }
